@@ -2,11 +2,30 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function Stats({ navigation }) {
+  const [statistics, setStatistics] = React.useState();
+
+  React.useEffect(() => {
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem("stats");
+        if (value !== null) {
+          // value previously stored
+          setStatistics(JSON.parse(value));
+        }
+      } catch (e) {
+        // error reading value
+        console.log(e);
+      }
+    };
+    getData();
+  }, []);
+
   return (
     <View>
-      <StatusBar hidden={true} />
+      <StatusBar hidden={false} />
       <View style={styles.statsPage}>
         <View style={styles.nav}>
           <MaterialIcons
@@ -16,7 +35,14 @@ function Stats({ navigation }) {
             onPress={() => navigation.navigate("Home")}
           />
 
-          <Text style={{ fontSize: 25, fontWeight: "600", color: "#4D3799" }}>
+          <Text
+            style={{
+              fontSize: 25,
+              fontWeight: "600",
+              color: "#4D3799",
+              marginLeft: 20,
+            }}
+          >
             Stats
           </Text>
 
@@ -58,14 +84,12 @@ function Stats({ navigation }) {
                   fontSize: 15,
                 }}
               >
-                7
+                {statistics?.correctAnswers || 0}
               </Text>
             </View>
 
             <View style={{ marginTop: 25 }}>
-              <Text style={{ color: "#88878E", fontSize: 10 }}>
-                CORRECT ANSWERS
-              </Text>
+              <Text style={{ color: "#88878E", fontSize: 10 }}>RAW</Text>
               <Text
                 style={{
                   fontWeight: "800",
@@ -74,7 +98,7 @@ function Stats({ navigation }) {
                   fontSize: 15,
                 }}
               >
-                7
+                {statistics?.incorrectAnswers + statistics?.correctAnswers || 0}
               </Text>
             </View>
           </View>
@@ -82,7 +106,7 @@ function Stats({ navigation }) {
           <View>
             <View>
               <Text style={{ color: "#88878E", fontSize: 10 }}>
-                WRONG ANSWERS
+                INCORRECT ANSWERS
               </Text>
               <Text
                 style={{
@@ -92,12 +116,12 @@ function Stats({ navigation }) {
                   fontSize: 15,
                 }}
               >
-                27
+                {statistics?.incorrectAnswers || 0}
               </Text>
             </View>
 
             <View style={{ marginTop: 25 }}>
-              <Text style={{ color: "#88878E", fontSize: 10 }}>ATTEMPTS</Text>
+              <Text style={{ color: "#88878E", fontSize: 10 }}>ACCURACY</Text>
               <Text
                 style={{
                   fontWeight: "800",
@@ -106,7 +130,7 @@ function Stats({ navigation }) {
                   fontSize: 15,
                 }}
               >
-                4
+                NAN
               </Text>
             </View>
           </View>
@@ -136,7 +160,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
   },
 
   box: {

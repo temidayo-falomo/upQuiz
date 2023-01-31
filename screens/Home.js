@@ -138,7 +138,7 @@ function Home({ navigation }) {
                       <Text
                         style={{
                           fontSize: 18,
-                          fontWeight: "600",
+                          fontWeight: "700",
                           marginBottom: 10,
                           color: "#fff",
                         }}

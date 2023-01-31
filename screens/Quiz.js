@@ -98,6 +98,47 @@ function Quiz({ navigation }) {
     }
   };
 
+  const handleStats = async (value) => {
+    const preValue = await AsyncStorage.getItem("stats");
+
+    let isAnsCorrect;
+
+    let isAnsWrong;
+
+    if (preValue) {
+      let parsedValue = JSON.parse(preValue);
+
+      try {
+        if (value === questions[questionNumber]?.correctAnswer) {
+          isAnsCorrect = parsedValue.correctAnswers + 1;
+          isAnsWrong = parsedValue.incorrectAnswers;
+        } else {
+          isAnsCorrect = parsedValue.correctAnswers;
+          isAnsWrong = parsedValue.incorrectAnswers + 1;
+        }
+
+        let tobeStored = {
+          correctAnswers: isAnsCorrect,
+          incorrectAnswers: isAnsWrong,
+          attempts: parsedValue.attempts,
+        };
+
+        await AsyncStorage.setItem("stats", JSON.stringify(tobeStored));
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      await AsyncStorage.setItem(
+        "stats",
+        JSON.stringify({
+          correctAnswers: 0,
+          incorrectAnswers: 0,
+          attempts: 0,
+        })
+      );
+    }
+  };
+
   const allOptions = [
     ...questions[questionNumber]?.incorrectAnswers,
     questions[questionNumber]?.correctAnswer,
@@ -210,6 +251,7 @@ function Quiz({ navigation }) {
                 key={index}
                 onPress={() => {
                   handleSubmitAnswer(option, index);
+                  handleStats(option);
                 }}
               >
                 <Text

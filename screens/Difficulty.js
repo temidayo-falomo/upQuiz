@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { StatusBar } from "expo-status-bar";
 import { AppContext } from "../global/Context";
 
 function Difficulty({ navigation }) {
@@ -11,17 +10,16 @@ function Difficulty({ navigation }) {
 
   return (
     <View style={styles.difficultyPage}>
-      <StatusBar hidden />
       <View style={styles.nav}>
         <MaterialIcons
           name="cancel"
           size={30}
-          color="royalblue"
+          color="#4D3799"
           onPress={() => navigation.navigate("Home")}
           style={{ marginRight: 20 }}
         />
 
-        <Text style={{ fontSize: 25, fontWeight: "600", color: "royalblue" }}>
+        <Text style={{ fontSize: 25, fontWeight: "600", color: "#4D3799" }}>
           Difficulty
         </Text>
 
@@ -34,17 +32,18 @@ function Difficulty({ navigation }) {
             <TouchableOpacity
               key={index}
               style={{
-                width: "100%",
-                height: 60,
+                width: "50%",
+                height: 50,
                 padding: 10,
                 borderRadius: 10,
                 display: "flex",
                 justifyContent: "center",
                 marginTop: 40,
                 backgroundColor:
-                  difficulty === choice ? "royalblue" : "transparent",
+                  difficulty === choice ? "#4D3799" : "transparent",
                 borderWidth: 2,
-                borderColor: "royalblue",
+                borderColor: "#4D3799",
+                alignSelf: "center",
               }}
               onPress={() => setChoice(difficulty)}
             >
@@ -52,8 +51,8 @@ function Difficulty({ navigation }) {
                 style={{
                   textAlign: "center",
                   fontWeight: "700",
-                  color: difficulty === choice ? "#fff" : "royalblue",
-                  fontSize: 20,
+                  color: difficulty === choice ? "#fff" : "#4D3799",
+                  fontSize: 18,
                   textTransform: "capitalize",
                 }}
               >

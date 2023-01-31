@@ -14,8 +14,6 @@ import Difficulty from "./screens/Difficulty";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [isFirstLaunch, setIsFirstLaunch] = React.useState(null);
-
   //
   const [categoryVal, setCategoryVal] = React.useState("");
   const [categoryImg, setCategoryImg] = React.useState("");

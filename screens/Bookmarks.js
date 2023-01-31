@@ -1,6 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -22,9 +29,15 @@ function Bookmarks({ navigation }) {
     getData();
   }, []);
 
+  const handleRemoveBookmark = (id) => {
+    const newBookmarks = bookmarks?.filter((bookmark) => bookmark !== id);
+    setBookmarks(newBookmarks);
+    AsyncStorage.setItem("bookmarks", JSON.stringify(newBookmarks));
+  };
+
   return (
     <ScrollView>
-      <StatusBar hidden />
+      {/* <StatusBar hidden /> */}
       <View style={styles.bookmarksPage}>
         <View style={styles.nav}>
           <MaterialIcons
@@ -60,20 +73,63 @@ function Bookmarks({ navigation }) {
                 shadowOpacity: 0.3,
                 shadowRadius: 4.65,
                 elevation: 8,
+                borderColor: "#4A3596",
+                borderWidth: 1,
+                position: "relative",
+                minHeight: 80,
+                // alignItems: "center",
               }}
             >
               <Text
-                style={{ color: "#4A3596", fontWeight: "600", fontSize: 17 }}
+                style={{
+                  color: "#4A3596",
+                  fontWeight: "600",
+                  fontSize: 17,
+                  // width: "90%",
+                }}
               >
-                <Text
+                {bkm}
+              </Text>
+
+              <View style={{ display: "flex", flexDirection: "row" }}>
+                <TouchableOpacity
                   style={{
-                    fontWeight: "800",
+                    padding: 8,
+                    backgroundColor: "gainsboro",
+                    width: 80,
+                    marginTop: 10,
+                    borderRadius: 5,
+                    alignItems: "center",
+                    backgroundColor: "#4A3596",
+                    marginRight: 10,
                   }}
                 >
-                  {index + 1}
-                </Text>
-                . {bkm}
-              </Text>
+                  <View>
+                    <Text style={{ color: "#fff", fontWeight: "600" }}>
+                      Copy
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={{
+                    padding: 8,
+                    backgroundColor: "gainsboro",
+                    width: 80,
+                    marginTop: 10,
+                    borderRadius: 5,
+                    alignItems: "center",
+                    backgroundColor: "pink",
+                  }}
+                  onPress={() => handleRemoveBookmark(bkm)}
+                >
+                  <View>
+                    <Text style={{ color: "#fff", fontWeight: "600" }}>
+                      Remove
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
           );
         })}
@@ -106,6 +162,5 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    // justifyContent: "space-between",
   },
 });
