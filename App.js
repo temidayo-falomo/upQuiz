@@ -7,7 +7,9 @@ import React from "react";
 import { AppContext } from "./global/Context";
 import Quiz from "./screens/Quiz";
 import Result from "./screens/Result";
-import { StatusBar } from "expo-status-bar";
+import Stats from "./screens/Stats";
+import Bookmarks from "./screens/Bookmarks";
+import Difficulty from "./screens/Difficulty";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +35,8 @@ export default function App() {
 
   //
   const [timerCount, setTimerCount] = React.useState(30);
+
+  //
 
   return (
     <AppContext.Provider
@@ -89,6 +93,30 @@ export default function App() {
           <Stack.Screen
             name="Result"
             component={Result}
+            options={{
+              headerShown: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="Stats"
+            component={Stats}
+            options={{
+              headerShown: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="Bookmarks"
+            component={Bookmarks}
+            options={{
+              headerShown: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="Difficulty"
+            component={Difficulty}
             options={{
               headerShown: false,
             }}

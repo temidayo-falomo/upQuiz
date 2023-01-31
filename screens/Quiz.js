@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ScrollView,
   StatusBar,
@@ -11,6 +11,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import { AppContext } from "../global/Context";
 import Timer from "../components/Timer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function Quiz({ navigation }) {
   const {
@@ -26,11 +27,10 @@ function Quiz({ navigation }) {
 
   const [isCorrectColor, setIsCorrectColor] = React.useState("#fff");
   const [tpropVal, setTpropVal] = React.useState(1);
-
   const [number, setNumber] = React.useState();
-
   const [answerColor, setAnswerColor] = React.useState("#fff");
   const [textColor, setTextColor] = React.useState("#4085F2");
+  const [bkm, setBkm] = React.useState(false);
 
   const handleSubmitAnswer = (answer, num) => {
     //
@@ -63,6 +63,22 @@ function Quiz({ navigation }) {
         }
       }, 1500);
     }, 500);
+  };
+
+  const bookmarkData = async (value) => {
+    const preValue = await AsyncStorage.getItem("bookmarks");
+
+    if (preValue) {
+      try {
+        let parsedValue = JSON.parse(preValue);
+        let tobeStored = [...parsedValue, value];
+        await AsyncStorage.setItem("bookmarks", JSON.stringify(tobeStored));
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      await AsyncStorage.setItem("bookmarks", JSON.stringify([value]));
+    }
   };
 
   const allOptions = [
@@ -101,7 +117,17 @@ function Quiz({ navigation }) {
             {<Timer tPropVal={tpropVal} setTpropVal={setTpropVal} />}
           </View>
 
-          <Fontisto name="bookmark" size={20} color="#fff" />
+          <Fontisto
+            name="bookmark"
+            size={25}
+            color="#fff"
+            onPress={() => {
+              bookmarkData(
+                questions[questionNumber]?.question.replace(/"|'/g, "")
+              );
+              setBkm(true);
+            }}
+          />
         </View>
 
         <View style={{ width: "90%", marginTop: 30 }}>
@@ -126,24 +152,6 @@ function Quiz({ navigation }) {
             return (
               <TouchableOpacity
                 style={{
-                  // backgroundColor: allOptions?.some(
-                  //   (e) =>
-                  //     allOptions[index] ===
-                  //     questions[questionNumber]?.correctAnswer
-                  // )
-                  //   ? isCorrectColor
-                  //   : initBackgroundColor,
-
-                  // backgroundColor:
-                  //   index === number
-                  //     ? answerColor
-                  //     : allOptions.some((e) => {
-                  //         allOptions[index] ===
-                  //           questions[questionNumber]?.correctAnswer;
-                  //       })
-                  //     ? "green"
-                  //     : "#fff",
-
                   backgroundColor: allOptions?.some(
                     () =>
                       allOptions[index] ===

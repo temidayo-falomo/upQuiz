@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  ActivityIndicator,
   Button,
   Image,
   Pressable,
@@ -24,11 +25,13 @@ function StartQuiz({ navigation }) {
     searchCategory,
     randomNumber,
     setRandomNumber,
+    questions,
   } = React.useContext(AppContext);
 
   const URL = `https://the-trivia-api.com/api/questions?limit=10&categories=${searchCategory}&difficulty=easy`;
 
   React.useEffect(() => {
+    setQuestions(null);
     fetch(URL)
       .then((res) => res.json())
       .then((data) => {
@@ -78,12 +81,16 @@ function StartQuiz({ navigation }) {
             on the "Next Question" button at the bottom to go to the next
             questino.
           </Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate("Quiz")}
-          >
-            <Text style={{ color: "#4085F2", fontWeight: "800" }}>Game</Text>
-          </TouchableOpacity>
+          {questions ? (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("Quiz")}
+            >
+              <Text style={{ color: "#4085F2", fontWeight: "800" }}>Game</Text>
+            </TouchableOpacity>
+          ) : (
+            <ActivityIndicator color="#fff" style={{ marginTop: 30 }} />
+          )}
         </View>
       </View>
     </ScrollView>

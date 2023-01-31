@@ -9,9 +9,12 @@ import {
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Fontisto from "@expo/vector-icons/Fontisto";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { quizCategories } from "../data/quiz-categories";
 import React from "react";
 import { AppContext } from "../global/Context";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 function Home({ navigation }) {
   const { setCategoryVal, setCategoryImg, setSearchCategory } =
@@ -34,7 +37,7 @@ function Home({ navigation }) {
                 alignItems: "center",
               }}
             >
-              <View
+              <TouchableOpacity
                 style={{
                   marginRight: 16,
                   borderColor: "#E5E7EB",
@@ -47,11 +50,34 @@ function Home({ navigation }) {
                   justifyContent: "center",
                   alignItems: "center",
                 }}
+                onPress={() => navigation.navigate("Difficulty")}
               >
-                <Ionicons name="ios-stats-chart" size={20} color="green" />
-              </View>
+                <MaterialCommunityIcons
+                  name="arm-flex"
+                  size={20}
+                  color="#000"
+                />
+              </TouchableOpacity>
 
-              <View
+              <TouchableOpacity
+                style={{
+                  marginRight: 16,
+                  borderColor: "#E5E7EB",
+                  borderWidth: 2,
+                  borderRadius: 20,
+                  padding: 5,
+                  height: 40,
+                  width: 40,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onPress={() => navigation.navigate("Stats")}
+              >
+                <Ionicons name="ios-stats-chart" size={20} color="#0E0928" />
+              </TouchableOpacity>
+
+              <TouchableOpacity
                 style={{
                   borderColor: "#E5E7EB",
                   borderWidth: 2,
@@ -63,9 +89,10 @@ function Home({ navigation }) {
                   justifyContent: "center",
                   alignItems: "center",
                 }}
+                onPress={() => navigation.navigate("Bookmarks")}
               >
                 <Fontisto name="bookmark" size={20} color="#000" />
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -77,7 +104,7 @@ function Home({ navigation }) {
                 fontSize: 35,
                 fontWeight: "700",
                 width: "80%",
-                color: "#000",
+                color: "#0E0928",
               }}
             >
               Choose Quiz Category.
