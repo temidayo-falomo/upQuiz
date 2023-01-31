@@ -2,10 +2,13 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { StatusBar } from "expo-status-bar";
+import { AppContext } from "../global/Context";
 
 function Difficulty({ navigation }) {
-  let difficulties = ["Easy", "Medium", "Hard"];
-  const [number, setNumber] = React.useState(0);
+  const { choice, setChoice } = React.useContext(AppContext);
+
+  let difficulties = ["easy", "medium", "hard"];
+
   return (
     <View style={styles.difficultyPage}>
       <StatusBar hidden />
@@ -28,12 +31,30 @@ function Difficulty({ navigation }) {
       <View style={{ width: "90%" }}>
         {difficulties.map((difficulty, index) => {
           return (
-            <TouchableOpacity key={index} style={styles.button}>
+            <TouchableOpacity
+              key={index}
+              style={{
+                width: "100%",
+                height: 60,
+                padding: 10,
+                borderRadius: 10,
+                display: "flex",
+                justifyContent: "center",
+                marginTop: 40,
+                backgroundColor:
+                  difficulty === choice ? "royalblue" : "transparent",
+                borderWidth: 2,
+                borderColor: "royalblue",
+              }}
+              onPress={() => setChoice(difficulty)}
+            >
               <Text
                 style={{
                   textAlign: "center",
-                  fontWeight: "600",
-                  color: "#fff",
+                  fontWeight: "700",
+                  color: difficulty === choice ? "#fff" : "royalblue",
+                  fontSize: 20,
+                  textTransform: "capitalize",
                 }}
               >
                 {difficulty}
@@ -51,7 +72,7 @@ export default Difficulty;
 const styles = StyleSheet.create({
   difficultyPage: {
     backgroundColor: "#fff",
-    minHeight: "100%",
+    minHeight: "90%",
     paddingTop: 50,
     display: "flex",
     alignItems: "center",
@@ -64,17 +85,5 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    // justifyContent: "space-between",
-  },
-
-  button: {
-    width: "100%",
-    height: 50,
-    padding: 10,
-    borderRadius: 10,
-    display: "flex",
-    justifyContent: "center",
-    marginTop: 40,
-    backgroundColor: "royalblue",
   },
 });

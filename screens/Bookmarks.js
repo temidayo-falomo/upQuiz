@@ -45,6 +45,7 @@ function Bookmarks({ navigation }) {
         {bookmarks?.map((bkm, index) => {
           return (
             <View
+              key={index}
               style={{
                 width: "90%",
                 borderRadius: 10,
@@ -58,7 +59,6 @@ function Bookmarks({ navigation }) {
                 },
                 shadowOpacity: 0.3,
                 shadowRadius: 4.65,
-
                 elevation: 8,
               }}
             >

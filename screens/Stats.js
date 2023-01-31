@@ -24,10 +24,6 @@ function Stats({ navigation }) {
         </View>
 
         <View style={styles.box}>
-          {/* <View>
-            <Text style={{ fontSize: 50, textAlign: "center" }}>Level</Text>
-            <Text style={{ fontSize: 50, textAlign: "center" }}>Easy</Text>
-          </View> */}
           <Image
             source={require("../assets/images/chart.png")}
             style={{

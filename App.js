@@ -36,7 +36,8 @@ export default function App() {
   //
   const [timerCount, setTimerCount] = React.useState(30);
 
-  //
+  //difficulty choice
+  const [choice, setChoice] = React.useState("easy");
 
   return (
     <AppContext.Provider
@@ -58,6 +59,9 @@ export default function App() {
 
         timerCount,
         setTimerCount,
+
+        choice,
+        setChoice,
       }}
     >
       <NavigationContainer>

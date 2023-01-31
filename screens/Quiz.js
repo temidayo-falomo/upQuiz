@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Fontisto from "@expo/vector-icons/Fontisto";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { AppContext } from "../global/Context";
 import Timer from "../components/Timer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -31,6 +31,8 @@ function Quiz({ navigation }) {
   const [answerColor, setAnswerColor] = React.useState("#fff");
   const [textColor, setTextColor] = React.useState("#4085F2");
   const [bkm, setBkm] = React.useState(false);
+
+  const [bookmarkClicked, setBookmarkClicked] = React.useState(false);
 
   const handleSubmitAnswer = (answer, num) => {
     //
@@ -58,6 +60,7 @@ function Quiz({ navigation }) {
 
         if (questionNumber < questions?.length - 1) {
           setQuestionNumber(questionNumber + 1);
+          setBookmarkClicked(false);
         } else {
           navigation.navigate("Result");
         }
@@ -65,7 +68,7 @@ function Quiz({ navigation }) {
     }, 500);
   };
 
-  const bookmarkData = async (value) => {
+  const handleAddBookmark = async (value) => {
     const preValue = await AsyncStorage.getItem("bookmarks");
 
     if (preValue) {
@@ -78,6 +81,20 @@ function Quiz({ navigation }) {
       }
     } else {
       await AsyncStorage.setItem("bookmarks", JSON.stringify([value]));
+    }
+  };
+
+  const handleRemoveBookmark = async (value) => {
+    const preValue = await AsyncStorage.getItem("bookmarks");
+
+    if (preValue) {
+      try {
+        let parsedValue = JSON.parse(preValue);
+        let tobeStored = parsedValue.filter((item) => item !== value);
+        await AsyncStorage.setItem("bookmarks", JSON.stringify(tobeStored));
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -117,17 +134,32 @@ function Quiz({ navigation }) {
             {<Timer tPropVal={tpropVal} setTpropVal={setTpropVal} />}
           </View>
 
-          <Fontisto
-            name="bookmark"
-            size={25}
-            color="#fff"
-            onPress={() => {
-              bookmarkData(
-                questions[questionNumber]?.question.replace(/"|'/g, "")
-              );
-              setBkm(true);
-            }}
-          />
+          {bookmarkClicked ? (
+            <Ionicons
+              name="md-bookmark"
+              size={25}
+              color="#fff"
+              onPress={() => {
+                setBookmarkClicked(false);
+                handleRemoveBookmark(
+                  questions[questionNumber]?.question.replace(/"|'/g, "")
+                );
+              }}
+            />
+          ) : (
+            <Ionicons
+              name="md-bookmark-outline"
+              size={25}
+              color="#fff"
+              onPress={() => {
+                handleAddBookmark(
+                  questions[questionNumber]?.question.replace(/"|'/g, "")
+                );
+                setBkm(true);
+                setBookmarkClicked(true);
+              }}
+            />
+          )}
         </View>
 
         <View style={{ width: "90%", marginTop: 30 }}>
