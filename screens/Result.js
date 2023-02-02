@@ -13,7 +13,7 @@ import { AppContext } from "../global/Context";
 import { StatusBar } from "expo-status-bar";
 
 function Result({ navigation }) {
-  const { questionNumber, questions, score } = React.useContext(AppContext);
+  const { questions, score } = React.useContext(AppContext);
 
   return (
     <ScrollView>
@@ -26,36 +26,37 @@ function Result({ navigation }) {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: "space-between",
           }}
         >
           <MaterialIcons
             name="cancel"
             size={35}
-            color="#000"
+            color="#fff"
             onPress={() => navigation.navigate("Home")}
           />
-
-          {/* <Text style={{ fontSize: 25, fontWeight: "600" }}>Result</Text>
-          
-          <View></View> */}
         </View>
         <View
           style={{
             display: "flex",
             alignItems: "center",
             width: "100%",
-            justifySelf: "center",
-            alignSelf: "center",
           }}
         >
           <View style={styles.circle}>
             <Text style={styles.circle.text}>
-              <Text style={{ color: "green" }}>{score}</Text>/{questions.length}
+              <Text style={{ color: "green" }}>{score}</Text>/
+              {questions?.length || 0}
             </Text>
           </View>
-          <Text style={{ width: "60%", textAlign: "center", color: "#fff" }}>
-            You were able to anser only {score} questions. You can do better.
+          <Text
+            style={{
+              width: "70%",
+              textAlign: "center",
+              color: "ghostwhite",
+              fontWeight: "600",
+            }}
+          >
+            You were able to answer {score} questions correctly.
           </Text>
 
           <TouchableOpacity
@@ -70,6 +71,7 @@ function Result({ navigation }) {
               alignItems: "center",
               justifyContent: "center",
             }}
+            // onPress={() => navigation.navigate("Start-Quiz")}
           >
             <Ionicons name="refresh" size={18} color="#fff" />
             <Text
@@ -127,19 +129,15 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
     position: "relative",
   },
 
   circle: {
-    width: 150,
-    height: 150,
     borderRadius: 75,
-    borderWidth: 8,
-    borderColor: "green",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 50,
     marginBottom: 20,
 
     text: {

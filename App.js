@@ -65,6 +65,13 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
+            name="Result"
+            component={Result}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
             name="Home"
             component={Home}
             options={{
@@ -88,13 +95,6 @@ export default function App() {
           <Stack.Screen
             name="Quiz"
             component={Quiz}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="Result"
-            component={Result}
             options={{
               headerShown: false,
             }}

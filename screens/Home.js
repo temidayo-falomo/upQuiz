@@ -146,7 +146,7 @@ function Home({ navigation }) {
                         {category.name}
                       </Text>
                       <Text style={{ color: "ghostwhite" }}>
-                        Play agaist yourself
+                        Play against yourself
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -177,8 +177,6 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   main: {
-    // borderWidth: 2,
-    // borderColor: "#E5E7EB",
     width: "90%",
     marginTop: 20,
   },

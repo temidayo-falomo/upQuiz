@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Clipboard from "expo-clipboard";
 
 function Bookmarks({ navigation }) {
   const [bookmarks, setBookmarks] = React.useState();
@@ -33,6 +34,10 @@ function Bookmarks({ navigation }) {
     const newBookmarks = bookmarks?.filter((bookmark) => bookmark !== id);
     setBookmarks(newBookmarks);
     AsyncStorage.setItem("bookmarks", JSON.stringify(newBookmarks));
+  };
+
+  const copyToClipboard = (value) => {
+    Clipboard.setStringAsync(value);
   };
 
   return (
@@ -103,6 +108,7 @@ function Bookmarks({ navigation }) {
                     backgroundColor: "#4A3596",
                     marginRight: 10,
                   }}
+                  onPress={() => copyToClipboard(bkm)}
                 >
                   <View>
                     <Text style={{ color: "#fff", fontWeight: "600" }}>
@@ -134,9 +140,20 @@ function Bookmarks({ navigation }) {
           );
         })}
 
-        {bookmarks?.length === 0 ||
-          (!bookmarks && (
-            <Text style={{ width: "90%", fontSize: 20, color: "#4A3596" }}>
+        {!bookmarks ||
+          (bookmarks?.length === 0 && (
+            <Text
+              style={{
+                width: "90%",
+                fontSize: 20,
+                fontWeight: "600",
+                color: "#4A3596",
+                position: "absolute",
+                alignSelf: "center",
+                bottom: "50%",
+                right: "-10%",
+              }}
+            >
               No bookmarks saved yet.
             </Text>
           ))}
@@ -151,7 +168,7 @@ const styles = StyleSheet.create({
   bookmarksPage: {
     backgroundColor: "#fff",
     minHeight: "100%",
-    paddingTop: 40,
+    paddingTop: 50,
     display: "flex",
     alignItems: "center",
     position: "relative",

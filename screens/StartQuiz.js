@@ -28,7 +28,7 @@ function StartQuiz({ navigation }) {
     questions,
   } = React.useContext(AppContext);
 
-  const URL = `https://the-trivia-api.com/api/questions?limit=10&categories=${searchCategory}&difficulty=${choice}`;
+  const URL = `https://the-trivia-api.com/api/questions?limit=5&categories=${searchCategory}&difficulty=${choice}`;
 
   React.useEffect(() => {
     setQuestions(null);
