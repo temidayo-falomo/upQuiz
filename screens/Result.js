@@ -13,7 +13,33 @@ import { AppContext } from "../global/Context";
 import { StatusBar } from "expo-status-bar";
 
 function Result({ navigation }) {
-  const { questions, score } = React.useContext(AppContext);
+  const {
+    questions,
+    setQuestions,
+    score,
+    searchCategory,
+    choice,
+    setQuestionNumber,
+    setScore,
+  } = React.useContext(AppContext);
+
+  const URL = `https://the-trivia-api.com/api/questions?limit=10&categories=${searchCategory}&difficulty=${choice}`;
+
+  const handleTryAgain = () => {
+    fetch(URL)
+      .then((res) => res.json())
+      .then((data) => {
+        setQuestions(data);
+        setQuestionNumber(0);
+        setScore(0);
+      })
+      .then(() => {
+        navigation.navigate("Start-Quiz");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <ScrollView>
@@ -43,17 +69,26 @@ function Result({ navigation }) {
           }}
         >
           <View style={styles.circle}>
-            <Text style={styles.circle.text}>
-              <Text style={{ color: "green" }}>{score}</Text>/
-              {questions?.length || 0}
+            <Text
+              style={{
+                color: score < questions.length / 2 ? "#FF4775" : "#68E789",
+                fontSize: 95,
+                fontWeight: "600",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              {score}
             </Text>
           </View>
           <Text
             style={{
-              width: "70%",
+              width: "80%",
               textAlign: "center",
-              color: "ghostwhite",
+              color: "#fff",
               fontWeight: "600",
+              fontSize: 20,
             }}
           >
             You were able to answer {score} questions correctly.
@@ -61,9 +96,9 @@ function Result({ navigation }) {
 
           <TouchableOpacity
             style={{
-              backgroundColor: "royalblue",
-              padding: 10,
-              width: "60%",
+              backgroundColor: "green",
+              padding: 15,
+              width: "55%",
               marginTop: 20,
               borderRadius: 5,
               display: "flex",
@@ -71,13 +106,14 @@ function Result({ navigation }) {
               alignItems: "center",
               justifyContent: "center",
             }}
-            // onPress={() => navigation.navigate("Start-Quiz")}
+            onPress={() => handleTryAgain()}
           >
             <Ionicons name="refresh" size={18} color="#fff" />
             <Text
               style={{
                 color: "#fff",
-                fontWeight: "600",
+                fontWeight: "800",
+                fontSize: 16,
               }}
             >
               Try Again
@@ -87,8 +123,39 @@ function Result({ navigation }) {
           <TouchableOpacity
             style={{
               backgroundColor: "orange",
-              padding: 10,
-              width: "60%",
+              padding: 15,
+              width: "55%",
+              marginTop: 20,
+              borderRadius: 5,
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={() => navigation.navigate("Home")}
+          >
+            <MaterialCommunityIcons
+              name="book-open-outline"
+              size={18}
+              color="#fff"
+            />
+            <Text
+              style={{
+                color: "#fff",
+                fontWeight: "800",
+                marginLeft: 5,
+                fontSize: 16,
+              }}
+            >
+              Change Category
+            </Text>
+          </TouchableOpacity>
+          {/* 
+          <TouchableOpacity
+            style={{
+              backgroundColor: "orange",
+              padding: 15,
+              width: "55%",
               marginTop: 20,
               borderRadius: 5,
               display: "flex",
@@ -105,13 +172,14 @@ function Result({ navigation }) {
             <Text
               style={{
                 color: "#fff",
-                fontWeight: "600",
+                fontWeight: "800",
                 marginLeft: 5,
+                fontSize: 16,
               }}
             >
               Check Answers
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <View></View>
       </View>
@@ -144,6 +212,9 @@ const styles = StyleSheet.create({
       fontSize: 55,
       fontWeight: "600",
       color: "royalblue",
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
     },
   },
 });
